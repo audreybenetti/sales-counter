@@ -35,18 +35,23 @@ public class SalesReader {
     }
 
     public BigDecimal totalOfCompletedSales() {
-        // TODO implementar
-        return BigDecimal.ZERO;
+        return sales.stream()
+                .filter(Sale::isCompleted)
+                .map(Sale::getValue)
+                .reduce(BigDecimal.valueOf(0), BigDecimal::add);
     }
 
     public BigDecimal totalOfCancelledSales() {
-        // TODO implementar
-        return BigDecimal.ZERO;
+        return sales.stream()
+                .filter(Sale::isCancelled)
+                .map(Sale::getValue)
+                .reduce(BigDecimal.valueOf(0), BigDecimal::add);
     }
 
     public Optional<Sale> mostRecentCompletedSale() {
-        // TODO implementar
-        return Optional.empty();
+        return sales.stream()
+                .filter(Sale::isCompleted)
+                .max(Comparator.comparing(sale -> sale.getSaleDate().toEpochDay()));
     }
 
     public long daysBetweenFirstAndLastCancelledSale() {
